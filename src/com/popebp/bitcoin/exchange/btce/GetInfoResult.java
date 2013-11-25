@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 public class GetInfoResult extends Result {
-	private List<Map<Currency, BigDecimal>> funds;
+	private Map<Currency, BigDecimal> funds;
 	private Rights rights;
 	private BigInteger transactionCount;
 	private BigInteger openOrders;
 	private BigInteger serverTime;
 	
-	public List<Map<Currency, BigDecimal>> getFunds() {
+	public Map<Currency, BigDecimal> getFunds() {
 		return funds;
 	}
 	
@@ -32,7 +32,7 @@ public class GetInfoResult extends Result {
 		return serverTime;
 	}
 	
-	public void setFunds(List<Map<Currency, BigDecimal>> funds) {
+	public void setFunds(Map<Currency, BigDecimal> funds) {
 		this.funds = funds;
 	}
 	
