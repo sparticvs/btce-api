@@ -30,4 +30,11 @@
   		<version>20131018</version>
   	</dependency>
   </dependencies>
+  <inceptionYear>2013.11.26</inceptionYear>
+  <scm>
+  	<url>https://github.com/sparticvs/btce-api</url>
+  	<connection>scm:git:https://github.com/sparticvs/btce-api</connection>
+  	<developerConnection>sparticvs</developerConnection>
+  	<tag>HEAD</tag>
+  </scm>
 </project>
