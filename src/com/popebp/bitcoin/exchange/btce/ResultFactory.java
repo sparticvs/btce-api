@@ -12,7 +12,7 @@ import java.math.BigInteger;
 
 public abstract class ResultFactory {
 	
-	private static Map<Currency, BigDecimal> jsonFundsToList(JSONObject obj) throws JSONException {
+	public static Map<Currency, BigDecimal> createCurrencyMap(JSONObject obj) throws JSONException {
 		
 		Map<Currency, BigDecimal> funds = new HashMap<Currency, BigDecimal>();
 		
@@ -39,7 +39,7 @@ public abstract class ResultFactory {
 		GetInfoResult result = new GetInfoResult();
 		
 		try {
-			result.setFunds(ResultFactory.jsonFundsToList(obj.getJSONObject("funds")));
+			result.setFunds(ResultFactory.createCurrencyMap(obj.getJSONObject("funds")));
 			result.setRights(ResultFactory.createRights(obj.getJSONObject("rights")));
 			result.setTransactionCount(BigInteger.valueOf(obj.getLong("transaction_count")));
 			result.setOpenOrders(BigInteger.valueOf(obj.getLong("open_orders")));
@@ -61,7 +61,7 @@ public abstract class ResultFactory {
 				// Throw exception pertaining to length
 				return null;
 			} else {
-				result.setTransactionId(BigInteger.valueOf(transactionNames.getInt(0)));
+				result.setTransactionId(BigInteger.valueOf(transactionNames.getLong(0)));
 			}
 			
 			JSONObject subObj = obj.getJSONObject(transactionNames.getString(0));
@@ -72,6 +72,36 @@ public abstract class ResultFactory {
 			result.setStatus(TransactionStatus.valueOf(subObj.getString("status")));
 			result.setTimestamp(BigInteger.valueOf(subObj.getLong("timestamp")));
 			result.setType(TradeType.valueOf(subObj.getString("type")));
+		} catch (JSONException ex) {
+			// TODO: throw a 'InvalidResultException'
+		}
+		
+		return result;
+	}
+	
+	public static Result createTradeHistoryResult(JSONObject obj) {
+		TradeHistoryResult result = new TradeHistoryResult();
+		
+		JSONArray tradeNames = obj.names();
+			
+		try {
+			if(tradeNames.length() != 1) {
+				// Throw exception pertaining to length
+				return null;
+			} else {
+				result.setTradeId(BigInteger.valueOf(tradeNames.getLong(0)));
+			}
+			
+			JSONObject subObj = obj.getJSONObject(tradeNames.getString(0));
+			
+			result.setAmount(BigDecimal.valueOf(subObj.getDouble("amount")));
+			result.setPair(CurrencyPairFactory.parsePair(subObj.getString("pair")));
+			result.setType(TradeType.valueOf(subObj.getString("type")));
+			result.setRate(BigDecimal.valueOf(subObj.getDouble("rate")));
+			result.setTimestamp(BigInteger.valueOf(subObj.getLong("timestamp")));
+			result.setOrderId(BigInteger.valueOf(subObj.getLong("order_id")));
+			result.setYourOrder(subObj.getBoolean("is_your_order"));
+			
 		} catch (JSONException ex) {
 			// TODO: throw a 'InvalidResultException'
 		}
