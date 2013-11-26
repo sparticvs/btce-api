@@ -10,3 +10,7 @@ Notice
 -------
 This is not production worthy yet. There is still much more
 coding that is needed.
+
+License
+-------
+See LICENSE file for details.
