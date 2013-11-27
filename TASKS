@@ -1,0 +1,6 @@
+TASKS
+=======
+  - Change BTCe.java to be "TradeApi.java"
+  - Create a "QuoteApi.java"
+  - Finish the rest of the ResultFactory methods
+  - Methods in TradeApi.java and QuoteApi.java to do RESTful requests
