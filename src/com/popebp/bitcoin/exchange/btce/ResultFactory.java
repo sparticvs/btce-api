@@ -136,4 +136,19 @@ public abstract class ResultFactory {
 		
 		return result;
 	}
+	
+	public static Result createTradeResult(JSONObject obj) {
+		TradeResult result = new TradeResult();
+		
+		try {
+			result.setReceived(BigDecimal.valueOf(obj.getDouble("received")));
+			result.setRemains(BigDecimal.valueOf(obj.getDouble("remains")));
+			result.setOrderId(BigInteger.valueOf(obj.getLong("order_id")));
+			result.setFunds(ResultFactory.createCurrencyMap(obj.getJSONObject("funds")));
+		} catch (JSONException ex) {
+			// TODO: throw a 'InvalidResultException'
+		}
+		
+		return result;
+	}
 }
