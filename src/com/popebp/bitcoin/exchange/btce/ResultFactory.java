@@ -151,4 +151,17 @@ public abstract class ResultFactory {
 		
 		return result;
 	}
+	
+	public static Result createCancelOrderResult(JSONObject obj) {
+		CancelOrderResult result = new CancelOrderResult();
+		
+		try {
+			result.setFunds(ResultFactory.createCurrencyMap(obj.getJSONObject("funds")));
+			result.setOrderId(BigInteger.valueOf(obj.getLong("order_id")));
+		} catch (JSONException ex) {
+			// TODO: throw a 'InvalidResultException'
+		}
+		
+		return result;
+	}
 }
