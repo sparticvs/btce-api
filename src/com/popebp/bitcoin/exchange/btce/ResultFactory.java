@@ -108,4 +108,32 @@ public abstract class ResultFactory {
 		
 		return result;
 	}
+	
+	public static Result createActiveOrdersResult(JSONObject obj) {
+		ActiveOrdersResult result = new ActiveOrdersResult();
+		
+		JSONArray orderNames = obj.names();
+		
+		try {
+			if(orderNames.length() != 1) {
+				// TODO: Throw exception pertaining to length
+				return null;
+			} else { 
+				result.setOrderId(BigInteger.valueOf(orderNames.getLong(0)));
+			}
+			
+			JSONObject subObj = obj.getJSONObject(orderNames.getString(0));
+			
+			result.setAmount(BigDecimal.valueOf(subObj.getDouble("amount")));
+			result.setPair(CurrencyPairFactory.parsePair(subObj.getString("pair")));
+			result.setType(TradeType.valueOf(subObj.getString("type")));
+			result.setRate(BigDecimal.valueOf(subObj.getDouble("rate")));
+			result.setTimestampCreated(BigInteger.valueOf(subObj.getLong("timestamp_created")));
+			result.setStatus(TransactionStatus.valueOf(subObj.getString("status")));
+		} catch (JSONException ex) {
+			// TODO: throw a 'InvalidResultException'
+		}
+		
+		return result;
+	}
 }
