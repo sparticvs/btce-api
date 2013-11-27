@@ -1,5 +1,7 @@
 package com.popebp.bitcoin.exchange.btce;
 
+import org.json.JSONObject;
+
 public class BTCe {
 	public static final String API_URL = "https://btc-e.com/tapi";
 	private String apiKey = null;
@@ -13,10 +15,15 @@ public class BTCe {
 	 *  o ResultFactory that builds each result type
 	 */
 	
-	
 	public BTCe(String key, String secret) {
 		this.apiKey = key;
 		this.apiSecret = secret;
+	}
+	
+	private JSONObject doRequest() {
+		// TODO: This will make the request, based on the endpoint
+		
+		return null;
 	}
 	
 	public Result getInfo() {
