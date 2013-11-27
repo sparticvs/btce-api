@@ -16,8 +16,8 @@ public abstract class ResultFactory {
 		
 		Map<Currency, BigDecimal> funds = new HashMap<Currency, BigDecimal>();
 		
-		for(Iterator<String> keyItr = obj.keys(); keyItr.hasNext();) {
-			String currency = keyItr.next();
+		for(Iterator<?> keyItr = obj.keys(); keyItr.hasNext();) {
+			String currency = keyItr.next().toString();
 			funds.put(CurrencyFactory.parseCurrency(currency), BigDecimal.valueOf(obj.getDouble(currency)));
 		}
 		
