@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.popebp.exception.InvalidResultException;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -24,18 +26,18 @@ public abstract class ResultFactory {
 		return funds;
 	}
 	
-	public static Rights createRights(JSONObject obj) {
+	public static Rights createRights(JSONObject obj) throws InvalidResultException {
 		Rights rights = new Rights();
 		try {
 			rights.setInfo(obj.getBoolean("info"));
 			rights.setTrade(obj.getBoolean("trade"));
 		} catch (JSONException ex) {
-			// TODO: throw a 'InvalidResultException'
+			throw new InvalidResultException(ex.getMessage());
 		}
 		return rights;
 	}
 	
-	public static Result createGetInfoResult(JSONObject obj) {
+	public static Result createGetInfoResult(JSONObject obj) throws InvalidResultException {
 		GetInfoResult result = new GetInfoResult();
 		
 		try {
@@ -45,13 +47,13 @@ public abstract class ResultFactory {
 			result.setOpenOrders(BigInteger.valueOf(obj.getLong("open_orders")));
 			result.setServerTime(BigInteger.valueOf(obj.getLong("server_time")));
 		} catch (JSONException ex) {
-			// TODO: throw a 'InvalidResultException'
+			throw new InvalidResultException(ex.getMessage());
 		}
 		
 		return result;
 	}
 	
-	public static Result createTransactionHistoryResult(JSONObject obj) {
+	public static Result createTransactionHistoryResult(JSONObject obj) throws InvalidResultException {
 		TransactionHistoryResult result = new TransactionHistoryResult();
 		
 		JSONArray transactionNames = obj.names();
@@ -73,13 +75,13 @@ public abstract class ResultFactory {
 			result.setTimestamp(BigInteger.valueOf(subObj.getLong("timestamp")));
 			result.setType(TradeType.valueOf(subObj.getString("type")));
 		} catch (JSONException ex) {
-			// TODO: throw a 'InvalidResultException'
+			throw new InvalidResultException(ex.getMessage());
 		}
 		
 		return result;
 	}
 	
-	public static Result createTradeHistoryResult(JSONObject obj) {
+	public static Result createTradeHistoryResult(JSONObject obj) throws InvalidResultException {
 		TradeHistoryResult result = new TradeHistoryResult();
 		
 		JSONArray tradeNames = obj.names();
@@ -103,13 +105,13 @@ public abstract class ResultFactory {
 			result.setYourOrder(subObj.getBoolean("is_your_order"));
 			
 		} catch (JSONException ex) {
-			// TODO: throw a 'InvalidResultException'
+			throw new InvalidResultException(ex.getMessage());
 		}
 		
 		return result;
 	}
 	
-	public static Result createActiveOrdersResult(JSONObject obj) {
+	public static Result createActiveOrdersResult(JSONObject obj) throws InvalidResultException {
 		ActiveOrdersResult result = new ActiveOrdersResult();
 		
 		JSONArray orderNames = obj.names();
@@ -131,13 +133,13 @@ public abstract class ResultFactory {
 			result.setTimestampCreated(BigInteger.valueOf(subObj.getLong("timestamp_created")));
 			result.setStatus(TransactionStatus.valueOf(subObj.getString("status")));
 		} catch (JSONException ex) {
-			// TODO: throw a 'InvalidResultException'
+			throw new InvalidResultException(ex.getMessage());
 		}
 		
 		return result;
 	}
 	
-	public static Result createTradeResult(JSONObject obj) {
+	public static Result createTradeResult(JSONObject obj) throws InvalidResultException {
 		TradeResult result = new TradeResult();
 		
 		try {
@@ -146,20 +148,20 @@ public abstract class ResultFactory {
 			result.setOrderId(BigInteger.valueOf(obj.getLong("order_id")));
 			result.setFunds(ResultFactory.createCurrencyMap(obj.getJSONObject("funds")));
 		} catch (JSONException ex) {
-			// TODO: throw a 'InvalidResultException'
+			throw new InvalidResultException(ex.getMessage());
 		}
 		
 		return result;
 	}
 	
-	public static Result createCancelOrderResult(JSONObject obj) {
+	public static Result createCancelOrderResult(JSONObject obj) throws InvalidResultException {
 		CancelOrderResult result = new CancelOrderResult();
 		
 		try {
 			result.setFunds(ResultFactory.createCurrencyMap(obj.getJSONObject("funds")));
 			result.setOrderId(BigInteger.valueOf(obj.getLong("order_id")));
 		} catch (JSONException ex) {
-			// TODO: throw a 'InvalidResultException'
+			throw new InvalidResultException(ex.getMessage());
 		}
 		
 		return result;
