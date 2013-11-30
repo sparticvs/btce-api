@@ -16,8 +16,8 @@ public abstract class ResultFactory {
 		
 		Map<Currency, BigDecimal> funds = new HashMap<Currency, BigDecimal>();
 		
-		for(Iterator<String> keyItr = obj.keys(); keyItr.hasNext();) {
-			String currency = keyItr.next();
+		for(Iterator<?> keyItr = obj.keys(); keyItr.hasNext();) {
+			String currency = keyItr.next().toString();
 			funds.put(CurrencyFactory.parseCurrency(currency), BigDecimal.valueOf(obj.getDouble(currency)));
 		}
 		
@@ -130,6 +130,34 @@ public abstract class ResultFactory {
 			result.setRate(BigDecimal.valueOf(subObj.getDouble("rate")));
 			result.setTimestampCreated(BigInteger.valueOf(subObj.getLong("timestamp_created")));
 			result.setStatus(TransactionStatus.valueOf(subObj.getString("status")));
+		} catch (JSONException ex) {
+			// TODO: throw a 'InvalidResultException'
+		}
+		
+		return result;
+	}
+	
+	public static Result createTradeResult(JSONObject obj) {
+		TradeResult result = new TradeResult();
+		
+		try {
+			result.setReceived(BigDecimal.valueOf(obj.getDouble("received")));
+			result.setRemains(BigDecimal.valueOf(obj.getDouble("remains")));
+			result.setOrderId(BigInteger.valueOf(obj.getLong("order_id")));
+			result.setFunds(ResultFactory.createCurrencyMap(obj.getJSONObject("funds")));
+		} catch (JSONException ex) {
+			// TODO: throw a 'InvalidResultException'
+		}
+		
+		return result;
+	}
+	
+	public static Result createCancelOrderResult(JSONObject obj) {
+		CancelOrderResult result = new CancelOrderResult();
+		
+		try {
+			result.setFunds(ResultFactory.createCurrencyMap(obj.getJSONObject("funds")));
+			result.setOrderId(BigInteger.valueOf(obj.getLong("order_id")));
 		} catch (JSONException ex) {
 			// TODO: throw a 'InvalidResultException'
 		}

@@ -1,0 +1,7 @@
+TASKS
+=======
+  - Change BTCe.java to be "TradeApi.java"
+  - Create a "QuoteApi.java"
+  - Methods in TradeApi.java and QuoteApi.java to do RESTful requests
+  - Create InvalidResultException (com.popeb.bitcoin.exchange.exception)
+  - Create InvalidLengthException ( "   "      "         "         "   )
