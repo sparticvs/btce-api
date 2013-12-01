@@ -2,6 +2,8 @@ package com.popebp.exception;
 
 public class InvalidResultException extends Exception {
 
+	private static final long serialVersionUID = 2482799750917510578L;
+
 	public InvalidResultException() {
 		// TODO Auto-generated constructor stub
 	}
@@ -20,11 +22,4 @@ public class InvalidResultException extends Exception {
 		super(message, cause);
 		// TODO Auto-generated constructor stub
 	}
-
-	public InvalidResultException(String message, Throwable cause,
-			boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
-		// TODO Auto-generated constructor stub
-	}
-
 }
