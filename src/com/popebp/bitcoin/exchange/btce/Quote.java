@@ -12,7 +12,7 @@ public class Quote {
 	// Order of currency matters
 	// https://btc-e.com/api/2/<curr>_<curr>/ticker
 	
-	private static String createQuoteUrl(CurrencyPair pair) {
+	private static String buildQuoteUrl(CurrencyPair pair) {
 		
 		Uri uri = Uri.parse(API_URL);
 		
