@@ -22,9 +22,15 @@ public class BTCe {
 		this.apiSecret = secret;
 	}
 	
-	private JSONObject doRequest() {
-		// TODO: This will make the request, based on the endpoint
-		
+	private JSONObject doRequest(String uri) {
+		return doRequest(uri, "");
+	}
+	
+	private JSONObject doRequest(String uri, String postBody) {
+		// 1. Build Headers with key and signature of post body
+		// 2. Make a POST request to uri, with headers and postBody
+		// 3. Read response from server
+		// 4. Return parse of JSONObject
 		return null;
 	}
 	
