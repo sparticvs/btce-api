@@ -1,8 +1,17 @@
 package com.popebp.bitcoin.exchange.btce;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
 import org.json.JSONObject;
 
 import android.net.Uri;
+
+import org.apache.commons.codec.binary.Hex;
+import org.apache.http.message.BasicHeader;
 
 public class BTCe {
 	public static final String API_URL = "https://btc-e.com/tapi";
@@ -31,6 +40,23 @@ public class BTCe {
 		// 2. Make a POST request to uri, with headers and postBody
 		// 3. Read response from server
 		// 4. Return parse of JSONObject
+		
+		BasicHeader keyHeader = new BasicHeader("Key", apiKey);
+		// HMAC-SHA512 of the post params with the apiSecret
+		SecretKeySpec spec = new SecretKeySpec(apiSecret.getBytes(), "HmacSHA512");
+		try {
+			Mac mac = Mac.getInstance("HmacSHA512");
+			mac.init(spec);
+			byte[] signatureBytes = mac.doFinal(postBody.getBytes());
+			BasicHeader signHeader = new BasicHeader("Sign", Hex.encodeHex(signatureBytes).toString());
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return null;
 	}
 	
