@@ -15,6 +15,8 @@ import org.json.JSONObject;
 import android.net.Uri;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -79,7 +81,13 @@ public class BTCe {
 		
 		HttpClient client = new DefaultHttpClient();
 		try {
-			client.execute(post);
+			HttpResponse resp = client.execute(post);
+			if(resp.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+				// TODO: Throw an exception for unexpected result
+				// This will always be an OK unless something is wrong with the gateway
+			}
+			// TODO: this is how we get the content resp.getEntity().getContent()
+			
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
