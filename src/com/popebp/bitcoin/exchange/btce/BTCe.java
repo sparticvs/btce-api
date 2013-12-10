@@ -1,5 +1,9 @@
 package com.popebp.bitcoin.exchange.btce;
 
+import java.io.Closeable;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
@@ -11,6 +15,10 @@ import org.json.JSONObject;
 import android.net.Uri;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 
 public class BTCe {
@@ -40,19 +48,42 @@ public class BTCe {
 		// 2. Make a POST request to uri, with headers and postBody
 		// 3. Read response from server
 		// 4. Return parse of JSONObject
-		
+		BasicHeader signHeader = null;
 		BasicHeader keyHeader = new BasicHeader("Key", apiKey);
 		// HMAC-SHA512 of the post params with the apiSecret
 		SecretKeySpec spec = new SecretKeySpec(apiSecret.getBytes(), "HmacSHA512");
+		
+		// TODO: Refactor the code below its nasty
 		try {
 			Mac mac = Mac.getInstance("HmacSHA512");
 			mac.init(spec);
 			byte[] signatureBytes = mac.doFinal(postBody.getBytes());
-			BasicHeader signHeader = new BasicHeader("Sign", Hex.encodeHex(signatureBytes).toString());
+			signHeader = new BasicHeader("Sign", Hex.encodeHex(signatureBytes).toString());
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		HttpPost post = new HttpPost();
+		post.addHeader(keyHeader);
+		post.addHeader(signHeader);
+		try {
+			post.setURI(new URI(uri));
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		HttpClient client = new DefaultHttpClient();
+		try {
+			client.execute(post);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -62,6 +93,7 @@ public class BTCe {
 	
 	public Result getInfo() {
 		String uri = BTCe.buildTradeUrl("getInfo");
+		doRequest(uri);
 		return new GetInfoResult();
 	}
 	
